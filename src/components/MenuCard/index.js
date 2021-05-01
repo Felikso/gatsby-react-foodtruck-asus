@@ -23,7 +23,7 @@ function MenuCard() {
 }, [])
 
 
-const data = useStaticQuery(
+/* const data = useStaticQuery(
   graphql`
     query {
       allWpDish {
@@ -51,81 +51,110 @@ const data = useStaticQuery(
   `
 )
 
-/*   const data = useStaticQuery(
-    graphql`
-      query {
-        allMenuJson {
-          nodes {
-            description
+
+  const wordpressDishes = data.allWpDish.nodes */
+
+
+  
+const menuData = useStaticQuery(
+  graphql`
+    query {
+      allWpMenuHotDish {
+        nodes {
+          featuredImage {
+            node {
+              localFile {
+                childImageSharp {
+                  gatsbyImageData
+                }
+              }
+            }
+          }
+          menu {
+            desc
             name
             price
             quantity
-            image {
-              childImageSharp {
-                fluid {
-                  ...GatsbyImageSharpFluid
+          }
+        }
+      }
+
+      allWpMenuDrink {
+        nodes {
+          featuredImage {
+            node {
+              localFile {
+                childImageSharp {
+                  gatsbyImageData
                 }
               }
             }
           }
-        }
-
-
-        HWGraphQL {
-        posts {
-      nodes {
-        featuredImage {
-          node {
-            sourceUrlSharp {
-              childImageSharp {
-                    fluid {
-                      ...GatsbyImageSharpFluid
-                    }
-                    gatsbyImageData
-                  }
-            }
-            title
-            sourceUrl
+          menu {
+            desc
+            name
+            price
+            quantity
+          }
+          dishes {
+            desc
+            name
+            price
+            quantity
           }
         }
       }
-    }
-    dishes {
-      nodes {
-        title
-        featuredImage {
-          node {
-            sourceUrl
-            sourceUrlSharp {
-              childImageSharp {
-                gatsbyImageData
-                fluid {
-                  ...GatsbyImageSharpFluid
+
+      allWpMenuSoupe {
+        nodes {
+          featuredImage {
+            node {
+              localFile {
+                childImageSharp {
+                  gatsbyImageData
                 }
               }
             }
           }
-        }
-        dishes {
-          category
-          description
-          fieldGroupName
-          name
-          price
-          quantity
+          menu {
+            desc
+            name
+            price
+            quantity
+          }
         }
       }
     }
-  }
-      }
-      
-    `
-  )
+  `
+)
+
+console.log(menuData)
+
+
+
+const menuDataObjKeys = Object.keys(menuData);
+console.log(menuDataObjKeys);
+
+const hotDish = menuData.allWpMenuSoupe.nodes
+
+console.log(Object.keys(menuData).map((key, index) => key))
+
+/* const hotDish = menuData.menuDataObjKeys[0]
+console.log(hotDish.nodes); */
+
+/* console.log(menuData.map((item, i) => item)) */
+/* 
+{Object.keys(games_list).map((game, i) => (
+  <div key={i}>
+     <p>{games_list[game].name}</p>
+     <p>{games_list[game].id}</p>
+  </div>
+ ))}
  */
+/* console.log(menuData.menuDataObjKeys[0].nodes.map((item) => item.menu.desc)); */
+const drinks = menuData.allWpMenuDrink.nodes
 
-/*   const wordpressDishes = data.HWGraphQL.dishes.nodes */
-
-  const wordpressDishes = data.allWpDish.nodes
+/* console.log(drinks) */
 
 
   const getUnique = (items, value) => {
@@ -136,11 +165,11 @@ const data = useStaticQuery(
   };
 
 
-const nodeDish = wordpressDishes.map(item => item.dishes)
+/* const nodeDish = wordpressDishes.map(item => item.dishes)
+ */
 
 
-
-let filteredNodeDish = wordpressDishes
+/* let filteredNodeDish = wordpressDishes
 
 if(dishCategory === "wszystkie"){
   filteredNodeDish = wordpressDishes.filter(item => item.dishes.category === item.dishes.category)
@@ -151,25 +180,45 @@ if(dishCategory === "wszystkie"){
 
   let categories = getUnique(nodeDish, "category");
 
-  categories = ["wszystkie", ...categories];
+  categories = ["wszystkie", ...categories]; */
 
 /*   console.log(categories) */
 
     return (
         <>
 
+        {
 
-<MenuButtonBox>
+Object.keys(menuData).map((key, index) => {
+/*   const myItem = menuData.key.nodes
+  console.log(myItem) */
+  return (
+    <h1>XD</h1>
+  )
+})
+
+        }
+
+{/* {
+  menuData.map((item, i) => {
+    console.log(item)
+    item.nodes.map((item, i) => (
+      <p>{item.menu.name}</p>
+    ))
+  })
+} */}
+
+{/* <MenuButtonBox>
 {
   categories.map((item, i) => (
     <MenuButton key={i} value={item} onClick={ e => setDishCategory(e.target.value)}>{item}</MenuButton>
   ))
 }
 
-</MenuButtonBox>
+</MenuButtonBox> */}
 
 
-{filteredNodeDish.map((item, i) => (
+{/* {Object.keys(menuData).map((item, i) => (
               <MenuBox
               data-aos="fade-in"   
               data-aos-offset="200"
@@ -184,52 +233,26 @@ if(dishCategory === "wszystkie"){
                />
 
                <DishContent>
-               <DishName>{item.dishes.name} <DishQ>{item.dishes.quantity}</DishQ></DishName>
-               <DishDesc>{item.dishes.description}</DishDesc>
+               <DishName>{item.menu.name} <DishQ>{item.menu.quantity}</DishQ></DishName>
+               <DishDesc>{item.menu.desc}</DishDesc>
                </DishContent>
 
                <DishPrice>
-                {item.dishes.price} pln
+                {item.menu.price} pln {i}
               </DishPrice>
 
 
               </MenuBox>
-            ))}
+            ))}  */}
 
 
-
-{
-              categories.map((item, i) => {
-                console.log(item)
-                const filtered = filteredNodeDish.filter(item => item === item.dishes.category)
-                console.log(filtered)
-                console.log(filteredNodeDish)
-                return(
-
-                 
-                  <>
-                   <h1>{item}</h1>
-                   {
-                  
-                    filteredNodeDish.filter(item => item === item.dishes.category).map((item, i)=> {
-
-                      return(
-                        <>
-
-                        <p>{item.dishes.name} </p>
-
-                        </>
-                      )
-                    })
-                   }
-                  </>
-                )
-
-              })
-  }
-
-
-
+{/* { Object.keys(menuData).map((item, i) => (
+                <div key={i} className="report">
+                       {menuData[item].map((media,ind) =>
+                         <div key={ind}>{media.menu.name}</div>
+                      )}
+                </div>
+        ))} */}
 
           
            
